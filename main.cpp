@@ -4,9 +4,12 @@
 
 using namespace std;
 
-#define M 8
+#define N 8
+
+const int M = N + 1;
 
 bitset<M> operator+(bitset<M> a, bitset<M> b);
+bitset<M> operator-(bitset<M> a, bitset<M> b);
 
 int main() {
     bitset<M> a(1);
@@ -14,7 +17,7 @@ int main() {
     a[1] = 1;
     bitset<M> c = a + b;
     cout << c << endl;
-    cout << a[1] + a[0] << endl;
+    cout << b - a << endl;
     //cout << b << endl;
     return 0;
 }
@@ -35,4 +38,11 @@ bitset<M> operator+(bitset<M> a, bitset<M> b) {
     }
 
     return c;
+}
+
+bitset<M> operator-(bitset<M> a, bitset<M> b) {
+    bitset<M> complement(1);
+    b = ~b + complement;
+
+    return a + b;
 }
