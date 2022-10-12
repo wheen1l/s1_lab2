@@ -4,7 +4,7 @@
 
 using namespace std;
 
-#define N 8
+#define N 64
 
 const int M = N + 1;
 
@@ -16,16 +16,23 @@ bitset<M> operator+(bitset<M> a, bitset<M> b);
 bitset<M> service_addition_function(bitset<M> a, bitset<M> b);
 bitset<M> operator-(bitset<M> a, bitset<M> b);
 bitset<M> operator*(bitset<M> a, bitset<M> b);
+//bitset<M> mult(bitset<M> a, bitset<M> b);
+//bitset<M> div(bitset<M> a, bitset<M> b);
 bitset<M> operator/(bitset<M> a, bitset<M> b);
 
 int main(int argc, char* argv[]) {
-    bitset<M> a(6);
-    bitset<M> b(5);
+    bitset<M> a("100000000000000000");
+    bitset<M> b(1);
 
-    bitset<M> c = a / b;
-    cout << c << endl;
+    bitset<M> c;
 
-    cout << c.to_string() << endl;
+    //cout << c << endl;
+
+    c = a / b;
+
+    cout << c.to_ullong() << endl;
+
+    //cout << c.to_ullong() << endl;
 
     //mpz_t z;
     //mpz_init_set_str(z, c.to_string().c_str(), 2);
@@ -120,12 +127,30 @@ bitset<M> operator-(bitset<M> a, bitset<M> b) {
 
 bitset<M> operator*(bitset<M> a, bitset<M> b) {
     bitset<M> c(0);
+    bitset<M> tmp(0);
+    bool overflow = false;
+    for (int i = 0; i < M; i++) {
+        if (b[i] == 1) {
+            if (a[i] == 1 and i * 2 >= M) {
+                overflow = true;
+            }
+            tmp = a << i;
+            c = c + tmp;
+        }
+    }
+    if (overflow)
+        cerr << "overflow error" << endl;
+    return c;
+}
+/*
+bitset<M> operator*(bitset<M> a, bitset<M> b) {
+    bitset<M> c(0);
     for (bitset<M> iter(0); iter != b; iter = inc(iter)) {
         c = c + a;
     }
     return c;
-}
-
+} */
+/*
 bitset<M> operator/(bitset<M> a, bitset<M> b) {
     bitset<M> counter(0);
     bitset<M> c = a;
@@ -134,4 +159,24 @@ bitset<M> operator/(bitset<M> a, bitset<M> b) {
         c = c - b;
     }
     return counter;
+}
+*/
+
+bitset<M> operator/(bitset<M> a, bitset<M> b) {
+    int counter = 0;
+    //bitset<M> diviter = b;
+    bitset<M> c = a;
+    bitset<M> ans(0);
+    while(comparation_cratch(c, (b << counter + 1)))
+        counter++;
+
+    while(counter >= 0) {
+        if (comparation_cratch(c, b << counter)) {
+            ans[counter] = 1;
+            c = c - (b << counter);
+        }
+        counter--;
+    }
+
+    return ans;
 }
