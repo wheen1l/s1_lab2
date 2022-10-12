@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1665519293 source:d:\programms\codeblocks workspace\hw\hw2\hw2\main.cpp
+1665534924 source:d:\programms\codeblocks workspace\hw\hw2\hw2\main.cpp
 	<iostream>
-	<vector>
 	<bits/stdc++.h>
+	<gmp.h>
 
